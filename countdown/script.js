@@ -1,12 +1,42 @@
- let time = 10;
+let time = 10;
+let interval;
 
-    let interval = setInterval(() => {
+const timerDisplay = document.getElementById("timer");
+const startBtn = document.getElementById("startBtn");
+const stopBtn = document.getElementById("stopBtn");
+
+function updateTimer() {
+    timerDisplay.innerText = time;
+}
+
+function startTimer() {
+    if (interval) {
+        return;
+    }
+
+    if (time <= 0) {
+        time = 10;
+    }
+
+    interval = setInterval(() => {
         time--;
-
-        document.getElementById("timer").innerText = time;
+        updateTimer();
 
         if (time === 0) {
             clearInterval(interval);
-            document.getElementById("timer").innerText = "Time's Up!";
+            interval = null;
+            timerDisplay.innerText = "Time's Up!";
         }
     }, 1000);
+}
+
+function stopTimer() {
+    if (interval) {
+        clearInterval(interval);
+        interval = null;
+    }
+}
+
+startBtn.addEventListener("click", startTimer);
+stopBtn.addEventListener("click", stopTimer);
+updateTimer();
